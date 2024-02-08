@@ -13,6 +13,8 @@ import 'dart:convert' show json;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
+import '../register/register.dart';
+
 
 const List<String> scopes = <String>[
   'email',
@@ -231,7 +233,7 @@ class _LoginState extends State<Login> {
                                                     "module" : true,
                                                   };
 
-                                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => Register()));
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Register()));
 
                                                 }, child:Align(
                                                   alignment: Alignment.center,
