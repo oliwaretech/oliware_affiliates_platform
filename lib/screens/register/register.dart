@@ -39,8 +39,6 @@ class _RegisterState extends State<Register> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _contactOriginStream = FirebaseFirestore.instance.collection("Oliware Config").doc("Data").collection("Contact Origin").snapshots();
-
   }
 
   @override
@@ -439,42 +437,26 @@ class _RegisterState extends State<Register> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream: _contactOriginStream,
-                      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-                        if (snapshot.hasError) {
-                          return const Text('Something went wrong');
-                        }
-
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return SizedBox(
-                              height: 800,
-                              child: const Text("Loading"));
-                        }
-                        return  DropdownButtonFormField<String>(
-                          value: contact_origin,
-                          borderRadius: BorderRadius.all(Radius.circular(22)),
-                          style: textInput,
-                          decoration: textFieldDecoration.copyWith(prefixIcon: Icon(Icons.adjust)),
-                          isExpanded: true,
-                          items: snapshot.data!.docs
-                              .map((DocumentSnapshot document) {
-                            Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                            return DropdownMenuItem<String>(
-                              value: data['contact_orign_name'],
-                              child: Text(data['contact_orign_name']),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              contact_origin = newValue!;
-                            });
-                          },
-                        );
-                      }
+                  child: DropdownButtonFormField<String>(
+                    value: contact_origin,
+                    borderRadius: BorderRadius.all(Radius.circular(22)),
+                    style: textInput,
+                    decoration: textFieldDecoration.copyWith(prefixIcon: Icon(Icons.person_pin_rounded)),
+                    isExpanded: true,
+                    items: <String>['Facebook', 'Instagram','LinkedIn','TikTok','Correo','Amigos o Familiares','Compañero de trabajo','Otro']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        contact_origin = newValue!;
+                      });
+                    },
                   ),
                 ),
-
               ],
             ),
           ),
@@ -509,7 +491,7 @@ class _RegisterState extends State<Register> {
           "contact_origin" : contact_origin,
         };
 
-        db.collection("Users").doc(uid)
+        db.collection("Affiliate Users").doc(uid)
             .set(userData, SetOptions(merge: true)).then((value) {
 
           setState(() {
