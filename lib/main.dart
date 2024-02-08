@@ -1,17 +1,37 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:oliware_affiliates_platform/screens/login/login.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'loading/loading.dart';
+
+Future <void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+        apiKey: "AIzaSyAPiXCPxh29iLH14WSeRBtw81BDHe8UwRM",
+        authDomain: "oliware-8718d.firebaseapp.com",
+        projectId: "oliware-8718d",
+        storageBucket: "oliware-8718d.appspot.com",
+        messagingSenderId: "409317625798",
+        appId: "1:409317625798:web:814998931972810416ecc7",
+        measurementId: "G-41FWE02FHG"
+    ),
+  );
+  runApp(MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Oliware Affiliates',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -28,12 +48,21 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: Container(),
+      home: FutureBuilder(
+          future: _initialization,
+          builder: (context, snapshot){
+            if(snapshot.hasError){
+              print("Error");
+            }
+            if(snapshot.connectionState == ConnectionState.done){
+              return Login();
+            }
+            return Loading();
+          }
+      ),
     );
   }
 }
-
 
