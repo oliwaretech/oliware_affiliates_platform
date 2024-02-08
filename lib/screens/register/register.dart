@@ -30,7 +30,7 @@ class _RegisterState extends State<Register> {
   final companyAddressController = TextEditingController();
   String document_type = "D.N.I";
 
-  String contact_origin = "Sin categoría";
+  String contact_origin = "Facebook";
   Stream<QuerySnapshot>? _contactOriginStream;
 
   FirebaseFirestore db = FirebaseFirestore.instance;
