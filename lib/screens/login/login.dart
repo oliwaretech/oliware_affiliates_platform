@@ -223,6 +223,24 @@ class _LoginState extends State<Login> {
                                                   },
                                                   child: Text("INGRESAR", style: textWhiteTitle,)),
                                             ),
+                                            Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: TextButton(onPressed: (){
+
+                                                  final modulePermissionData = <String, dynamic>{
+                                                    "module" : true,
+                                                  };
+
+                                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => Register()));
+
+                                                }, child:Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                      "REGISTRARSE",
+                                                      style: textWhiteTitle,
+                                                      textAlign: TextAlign.center
+                                                  ),
+                                                )))
                                           ],
                                         ),
                                       ),
