@@ -13,6 +13,7 @@ import 'dart:convert' show json;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
+import '../home/home.dart';
 import '../register/register.dart';
 
 
@@ -283,6 +284,7 @@ class _LoginState extends State<Login> {
 
 
               //NEXT SCREEN
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
               isLoading = false;
             });
           },
