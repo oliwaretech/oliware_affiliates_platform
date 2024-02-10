@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../loading/loading.dart';
 import '../../styles/styles.dart';
+import '../home/home.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -495,7 +496,7 @@ class _RegisterState extends State<Register> {
             .set(userData, SetOptions(merge: true)).then((value) {
 
           setState(() {
-           // Navigator.push(context, MaterialPageRoute(builder: (context) => Branches(company_id : company_id)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
             dialogLoading = false;
           });
 
