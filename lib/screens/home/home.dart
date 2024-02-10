@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:intl/intl.dart';
 import '../../styles/styles.dart';
 
 class Home extends StatefulWidget {
@@ -18,6 +18,8 @@ class _HomeState extends State<Home> {
   final _auth = FirebaseAuth.instance;
 
   String name = "", user_id = "";
+  num current_balance = 0.00;
+  final currencyFormat = new NumberFormat("#,##0.00", "en_US");
 
   @override
   void initState() {
@@ -111,6 +113,109 @@ class _HomeState extends State<Home> {
                       ),
                     )),
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Card(
+                shape: cardShape,
+                shadowColor: Color(0xFF1D4C94),
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Text("FONDOS DISPONIBLES", style: textBlackTitle, textAlign: TextAlign.center,),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Text("S/ "+currencyFormat.format(current_balance), style: textInput.copyWith(fontSize: 18), textAlign: TextAlign.center,),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: ElevatedButton(
+                            style: fieldButtonStyle,
+                            onPressed: (){
+
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("Retirar Fondos", style: textInput, textAlign: TextAlign.center,),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: FaIcon(FontAwesomeIcons.bank, color: Color(0xFF1D4C94),),
+                                  ),
+                                )
+                              ],
+                            )),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Text("Últimos Movimientos", style: textBlackSubTitle, textAlign: TextAlign.center,),
+            ),
+            SizedBox(
+              height: 300,
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream:  FirebaseFirestore.instance.collection("Affiliate Users").doc(user_id).collection("Operations").snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.data?.size == 0) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(14.0),
+                          child: Image.asset("assets/marketing.png", height: 90,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(14.0),
+                          child: Text("AÚN NO TIENES MOVIEMIENTOS", style: textInput, textAlign: TextAlign.center,),
+                        )
+                      ],
+                    );
+                  }
+                  else if (snapshot.hasData) {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            shape: cardShape,
+                            child: Row(
+                              children: [
+
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return const Text('Error');
+                  } else {
+                    return const CircularProgressIndicator();
+                  }},),
             )
           ],
         ),

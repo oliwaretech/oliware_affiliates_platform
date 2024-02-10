@@ -490,6 +490,7 @@ class _RegisterState extends State<Register> {
           "registration_date" : DateTime.now(),
           "uid" : uid,
           "contact_origin" : contact_origin,
+          "current_balance" : 0.00,
         };
 
         db.collection("Affiliate Users").doc(uid)
