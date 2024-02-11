@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
                             child: ElevatedButton(
                               style: mainButtonStyle,
                                 onPressed: (){
-                                  Clipboard.setData(ClipboardData(text: "https://app.oliware.tech/affiliate/"+user_id));
+                                  Clipboard.setData(ClipboardData(text: "https://app.oliware.tech/#/affiliate/"+user_id));
 
                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     shape: greenSnackBarShape,
@@ -200,11 +200,24 @@ class _HomeState extends State<Home> {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Card(
-                            shape: cardShape,
-                            child: Row(
-                              children: [
-
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      flex: 3,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          snapshot.data!.docs[index].get('company_name')+" - "+snapshot.data!.docs[index].get('current_plan_name'), maxLines: 1, style: textInput,),
+                                      )),
+                                  Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(snapshot.data!.docs[index].get('operation_type') == "affiliate_fee" ? "+"+currencyFormat.format(snapshot.data!.docs[index].get('payment_amount')) : "-"+currencyFormat.format(snapshot.data!.docs[index].get('withdrawal_amount')),style: textBlackSubTitle.copyWith(color: snapshot.data!.docs[index].get('operation_type') == "affiliate_fee" ? Colors.green : Colors.red)),
+                                      ) )
+                                ],
+                              ),
                             ),
                           ),
                         );
@@ -229,6 +242,7 @@ class _HomeState extends State<Home> {
     docRef.get().then((value) {
       setState(() {
         name = value['name'];
+        current_balance = value['current_balance'];
       });
     });
   }
