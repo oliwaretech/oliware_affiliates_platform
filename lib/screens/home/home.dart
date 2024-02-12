@@ -139,7 +139,28 @@ class _HomeState extends State<Home> {
                         child: ElevatedButton(
                             style: fieldButtonStyle,
                             onPressed: (){
+                              if(current_balance < 1.00){
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  shape: greenSnackBarShape,
+                                  backgroundColor: Colors.black,
 
+                                  content: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: Icon(Icons.error, color: Colors.white,)
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: Text("Debes tener al menos S/ 1.00 para realizar un retiro de fondos", style: textWhiteSubTitle, textAlign: TextAlign.center,),
+                                      ),
+                                    ],
+                                  ),behavior: SnackBarBehavior.floating,
+                                ));
+                              }
+                              else{
+
+                              }
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
